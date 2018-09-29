@@ -1,2 +1,1 @@
-# lab
-lab project
+6.15，支持redis和memory两种缓存
