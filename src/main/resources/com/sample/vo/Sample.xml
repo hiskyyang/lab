@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="Sample">
+    <!-- 定义一条查询语句，在bean的implementation中会引用此语句的id http://wangh8080.blog.163.com/blog/static/1978482972012102804918201/ -->
+    <insert id="add" parameterType="Sample">
+        INSERT INTO
+        Sample(sampleId,name,type,collectDate,province,city,county,category,comment,quantity,location,createPerson,createTime)
+        VALUES(#{sampleId},#{name},#{type},#{collectDate},#{province},#{city},#{county},#{category},#{comment},#{quantity},#{location},#{createPerson},NOW())
+
+        <selectKey resultType="java.lang.Integer" keyProperty="sampleId"
+                   order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <delete id="delete" parameterType="int">
+		DELETE FROM Sample WHERE sampleId=#{sampleId}
+	</delete>
+
+    <update id="update" parameterType="User">
+		UPDATE Sample set
+            name=#{name},
+            type=#{type},
+            collectDate=#{collectDate},
+            <if test="province != null and province != ''">
+                province=#{province},
+            </if>
+            <if test="city != null and city != ''">
+                city=#{city},
+            </if>
+            <if test="county != null and county != ''">
+                county=#{county},
+            </if>
+                category=#{category},
+            <if test="comment != null and comment != ''">
+                comment=#{comment},
+            </if>
+            <if test="quantity != null and quantity != ''">
+                quantity=#{quantity},
+            </if>
+                location=#{location},
+            <if test="createPerson != null and createPerson != ''">
+                createPerson=#{createPerson},
+            </if>
+            createTime=NOW()
+		WHERE sampleId=#{sampleId}
+	</update>
+
+    <select id="get" parameterType="int" resultType="Sample">
+		SELECT * from Sample where sampleId=#{sampleId}
+	</select>
+
+    <select id="list" parameterType="Sample" resultType="Sample">
+        SELECT * from Sample where 1=1
+        <if test="sampleId != null">
+            and sampleId=#{sampleId}
+        </if>
+        <if test="name != null and name != ''">
+            and name=#{name}
+        </if>
+        <if test="type != null and type != ''">
+            and type=#{type}
+        </if>
+        <if test="collectDate != null and collectDate != ''">
+            and collectDate=#{collectDate}
+        </if>
+        <if test="province != null and province != ''">
+            and province=#{province}
+        </if>
+        <if test="city != null and city != ''">
+            and city=#{city}
+        </if>
+        <if test="county != null and county != ''">
+            and county=#{county}
+        </if>
+        <if test="location != null and location != ''">
+            and location=#{location}
+        </if>
+        <if test="category != null and category != ''">
+            and category=#{category}
+        </if>
+    </select>
+
+</mapper>
